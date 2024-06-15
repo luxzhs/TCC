@@ -8,7 +8,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 @CucumberOptions(
 		features = "src/test/resources/CenariosAmazon.feature",	
 		plugin = {"pretty","html:target/relatorio.html"},
-		tags = "not @ignorar",
+		tags = "not @detalhes",
 		monochrome = true,
 		snippets = SnippetType.CAMELCASE,
 		dryRun = false

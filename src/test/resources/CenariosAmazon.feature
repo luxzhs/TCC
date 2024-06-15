@@ -26,4 +26,8 @@ Então o produto é adicionado
 E é possível visualizar o produto no carrinho
 
 
+Cenário: Usuário deseja anunciar produtos 
+Dado que o usuário está na página da Amazon
+Quando ele clica em "Anuncie seus produtos"
+Então outra aba abre para o usuário proceder com seus produtos
 

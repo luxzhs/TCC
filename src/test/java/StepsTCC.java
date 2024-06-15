@@ -12,6 +12,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 
 import java.time.Duration;
+import java.util.ArrayList;
+
 
 
 public class StepsTCC {
@@ -25,6 +27,12 @@ public class StepsTCC {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://www.amazon.com.br");
+        // Aguarde 10 segundos para garantir que a página seja carregada completamente
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Quando("o usuário digita {string} na barra de busca")
@@ -202,6 +210,12 @@ public class StepsTCC {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://www.amazon.com.br");
+        // Aguarde 10 segundos para garantir que a página seja carregada completamente
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     
     @Quando("o usuário aplica o filtro do celular {string}")
@@ -257,7 +271,50 @@ public class StepsTCC {
             throw new AssertionError("Produto não está visível no carrinho");
         }
     }
+   
+    @Dado("que o usuário está na página da Amazon")
+    public void queOUsuarioEstáNaPáginaDaAmazon() {
+        System.setProperty("webdriver.chrome.driver", "C:\\temp\\Drivers\\chromedriver-win64\\chromedriver.exe");
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.get("https://www.amazon.com.br");
+        // Aguarde 10 segundos para garantir que a página seja carregada completamente
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Quando("ele clica em {string}")
+    public void eleClicaEm(String linkTexto) {
+        try {
+            WebElement linkAnuncieSeusProdutos = wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(linkTexto)));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", linkAnuncieSeusProdutos);
+        } catch (org.openqa.selenium.TimeoutException e) {
+            System.out.println("Elemento não encontrado dentro do tempo de espera: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro: " + e.getMessage());
+        }
+    }
+
+    @Entao("outra aba abre para o usuário proceder com seus produtos")
+    public void outraAbaAbreParaOUsuarioProcederComSeusProdutos() {
+        try {
+            // Espere um curto período para garantir que a nova aba seja aberta
+            Thread.sleep(2000);
+
+            // Obtenha todas as guias abertas
+            ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+
+            // Mude para a nova aba
+            driver.switchTo().window(tabs.get(1));
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro: " + e.getMessage());
+        }
+    }
     // Método para encerrar o WebDriver após cada teste
     @After
     public void tearDown() {
